@@ -176,15 +176,15 @@ export default async function InvoiceDetailPage({
                                                 <td className="py-6 px-4 text-right font-medium text-slate-600">{invoice.sessionCount}</td>
                                                 <td className="py-6 text-right font-bold text-slate-900">{formatRupiah(invoice.basePrice * invoice.sessionCount)}</td>
                                             </tr>
-                                            {invoice.transportFee > 0 && (
+                                            {invoice.transportPrice > 0 && (
                                                 <tr>
                                                     <td className="py-6 font-bold text-slate-900">
                                                         Biaya Transport Tambahan
                                                         <span className="block text-xs text-slate-500 font-normal mt-1">Siswa luar area (&gt;5km)</span>
                                                     </td>
-                                                    <td className="py-6 px-4 text-right font-medium text-slate-600">{formatRupiah(invoice.transportFee)}</td>
+                                                    <td className="py-6 px-4 text-right font-medium text-slate-600">{formatRupiah(invoice.transportPrice)}</td>
                                                     <td className="py-6 px-4 text-right font-medium text-slate-600">{invoice.sessionCount}</td>
-                                                    <td className="py-6 text-right font-bold text-slate-900">{formatRupiah(invoice.transportFee * invoice.sessionCount)}</td>
+                                                    <td className="py-6 text-right font-bold text-slate-900">{formatRupiah(invoice.transportPrice * invoice.sessionCount)}</td>
                                                 </tr>
                                             )}
                                         </tbody>

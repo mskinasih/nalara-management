@@ -1,20 +1,48 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
   provider = "postgresql"
 }
 
+// ─── Enums ────────────────────────────────────────────────────────────────────
+
+enum InvoiceStatus {
+  paid
+  unpaid
+}
+
+enum Day {
+  Senin
+  Selasa
+  Rabu
+  Kamis
+  Jumat
+  Sabtu
+  Minggu
+}
+
+enum AttendanceStatus {
+  Hadir
+  Izin
+}
+
+// ─── Models ───────────────────────────────────────────────────────────────────
+
 model Student {
-  id             String   @id @default(cuid())
+  id             String       @id @default(cuid())
   name           String
   jenjang        String
   type           String
   kelas          String
-  isLongDistance Boolean  @default(false)
-  invoices       Invoice[]
-  createdAt      DateTime @default(now())
+  isLongDistance Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+
+  invoices    Invoice[]
+  schedules   Schedule[]
+  attendances Attendance[]
 }
 
 model Pricing {
@@ -27,16 +55,35 @@ model Pricing {
 }
 
 model Invoice {
-  id                    String   @id @default(cuid())
-  invoiceNumber         String   @unique
-  student               Student  @relation(fields: [studentId], references: [id])
-  studentId             String
-  month                 Int
-  year                  Int
-  sessionCount          Int
-  basePrice             Int
-  transportFee          Int
-  finalPricePerSession  Int
-  total                 Int
-  createdAt             DateTime @default(now())
+  id                   String        @id @default(cuid())
+  invoiceNumber        String        @unique
+  student              Student       @relation(fields: [studentId], references: [id])
+  studentId            String
+  month                Int
+  year                 Int
+  sessionCount         Int
+  basePrice            Int
+  transportPrice       Int
+  finalPricePerSession Int
+  total                Int
+  status               InvoiceStatus @default(unpaid)
+  createdAt            DateTime      @default(now())
+}
+
+model Schedule {
+  id        String  @id @default(cuid())
+  student   Student @relation(fields: [studentId], references: [id])
+  studentId String
+  day       Day
+  startTime String
+  endTime   String
+}
+
+model Attendance {
+  id        String           @id @default(cuid())
+  student   Student          @relation(fields: [studentId], references: [id])
+  studentId String
+  date      DateTime         @db.Date
+  status    AttendanceStatus
+  notes     String?
 }
